@@ -2,6 +2,9 @@
 
 > **PolicyTwin helps teams discover policy ambiguity and financial regressions before release.**
 
+[![Live on Render](https://img.shields.io/badge/Render-Live%20Demo-46E3B7?logo=render&logoColor=white)](https://policytwin.onrender.com)
+🔗 **Live Website**: [https://policytwin.onrender.com](https://policytwin.onrender.com)
+
 Counterfactual testing for financial-policy changes. Give it the current policy and a proposed one; it generates
 *transaction twins* — pairs of transactions that differ in exactly one fact — runs both policy versions on each,
 replays the payment operations (on an in-process simulator for the full run; optionally in the real PayPal Sandbox for a selected pair) and reports where the
@@ -202,6 +205,9 @@ human approving a BLOCK, production host allowed, multi-field twin accepted) was
 - **Hosted Fields** (the PCI-recommended card path) is documented but **not implemented**.
 
 ## Deploy on Render
+
+- **Deployed Live URL**: [https://policytwin.onrender.com](https://policytwin.onrender.com)
+- **Health Check**: [https://policytwin.onrender.com/api/health](https://policytwin.onrender.com/api/health)
 
 1. Push this folder to a Git repo. 2. Render → *New* → *Blueprint* → pick the repo (`render.yaml` creates a web service and a Postgres database
 and injects `DATABASE_URL`; it also generates `SESSION_SECRET`). 3. Set `DEMO_PASSCODE` and any optional secrets marked `sync: false`. 4. Open `/api/health` to confirm the runtime mode.
