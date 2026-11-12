@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PolicyTwin release report — Low-Value Missing-Delivery Refund — run_90284b3e</title>
+<style>
+ :root{--ink:#0b1b33;--mut:#64748b;--line:#e2ddd2;--paper:#f6f4ef}
+ *{box-sizing:border-box} body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+ main{max-width:1040px;margin:0 auto;padding:32px 20px 64px} h1{font:700 28px/1.2 Georgia,serif;margin:0 0 4px} h2{font:700 20px Georgia,serif;margin:36px 0 8px} h3{font-size:14px;margin:12px 0 6px}
+ .mut{color:var(--mut);font-size:13px} code,pre{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px} pre{white-space:pre-wrap;background:#fff;border:1px solid var(--line);padding:12px;border-radius:8px}
+ table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden;font-size:13.5px} th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top} th{background:#faf8f3;font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--mut)}
+ .banner{border-radius:12px;padding:18px 22px;margin:20px 0;border:1px solid #b42318;background:#fde8e6;color:#b42318} .banner .v{font:800 34px/1 Georgia,serif;letter-spacing:.02em}
+ .disc{border:1px dashed #a86400;background:#fffaf0;border-radius:10px;padding:12px 16px;font-size:13px} .disc ul{margin:6px 0 0;padding-left:18px}
+ .badges span{display:inline-block;border:1px solid var(--line);background:#fff;border-radius:999px;padding:2px 10px;font-size:12px;margin-right:6px}
+ .pill{color:#fff;border-radius:999px;padding:1px 8px;font-size:11px;font-weight:700} .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} li{margin:10px 0}
+ .kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:14px 0} .kpi{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px} .kpi b{display:block;font:700 22px Georgia,serif}
+ @media print{body{background:#fff}main{padding:0}} @media(max-width:720px){.grid2,.kpis{grid-template-columns:1fr 1fr}}
+</style></head><body><main>
+<p class="mut">PayPal PolicyTwin · counterfactual testing for safer financial-policy releases</p>
+<h1>Low-Value Missing-Delivery Refund</h1>
+<div class="badges"><span>Run run_90284b3e</span><span>Candidate: Version B</span>
+<span>Executed in: SIMULATED sandbox (not PayPal)</span><span>AI: deterministic agents (no model)</span><span>2026-11-07T03:22:08.688Z</span></div>
+<div class="disc"><b>Read this first.</b><ul><li>The policies are fictional examples.</li><li>The impact data is synthetic.</li><li>The Sandbox uses test money (or an in-process simulator when no Sandbox credentials are configured).</li><li>PolicyTwin does not represent PayPal’s current internal systems.</li><li>It is not legal or compliance advice.</li><li>The AI recommends; deterministic rules verify.</li><li>A human makes the final release decision.</li></ul></div>
+<div class="banner"><div class="mut" style="color:inherit">Release recommendation (not an approval)</div><div class="v">BLOCK</div>
+<ul><li>pair_01 Physical vs digital product: Unintended policy expansion: the twin (product_type=digital) received the same AUTO_REFUND outcome as the base (product_type=physical).</li><li>pair_04 First refund request vs retried request: Financial invariant failed: ONE_REFUND_PER_LOGICAL_REQUEST.</li><li>pair_05 No dispute vs open dispute: Unintended policy expansion: the twin (dispute_state=open) received the same AUTO_REFUND outcome as the base (dispute_state=none).</li><li>pair_06 Normal webhook vs duplicate webhook: Financial invariant failed: ONE_REFUND_PER_LOGICAL_REQUEST, DUPLICATE_WEBHOOK_NO_DUPLICATE_OPERATION, OLDER_WEBHOOK_NO_STATE_REGRESSION.</li></ul></div>
+<div class="kpis"><div class="kpi"><b>10</b>twin pairs</div><div class="kpi"><b>4</b>as expected</div><div class="kpi"><b>4</b>critical</div><div class="kpi"><b>5</b>invariant failures</div><div class="kpi"><b>100%</b>required coverage</div></div>
+<h2>Twin matrix</h2>
+<table><thead><tr><th>Pair</th><th>Changed variable</th><th>Old (A) base → twin</th><th>New (B) base → twin</th><th>Result</th><th>Severity</th></tr></thead><tbody><tr>
+        <td>pair_01<div class="mut">core</div></td>
+        <td><b>Physical vs digital product</b><div class="mut">changes <code>product_type</code>: physical → digital</div></td>
+        <td>REVIEW → REVIEW</td>
+        <td>AUTO_REFUND → AUTO_REFUND</td>
+        <td>UNINTENDED EXPANSION</td>
+        <td style="color:#b42318;font-weight:700">critical</td>
+      </tr><tr>
+        <td>pair_02<div class="mut">core</div></td>
+        <td><b>49.99 vs 50.01 (threshold)</b><div class="mut">changes <code>amount</code>: 49.99 → 50.01</div></td>
+        <td>REVIEW → REVIEW</td>
+        <td>AUTO_REFUND → REVIEW</td>
+        <td>AS EXPECTED</td>
+        <td style="color:#0f7b55;font-weight:700">none</td>
+      </tr><tr>
+        <td>pair_03<div class="mut">core</div></td>
+        <td><b>USD vs EUR</b><div class="mut">changes <code>currency</code>: USD → EUR</div></td>
+        <td>REVIEW → REVIEW</td>
+        <td>AUTO_REFUND → AUTO_REFUND</td>
+        <td>AMBIGUOUS</td>
+        <td style="color:#a86400;font-weight:700">medium</td>
+      </tr><tr>
+        <td>pair_04<div class="mut">core</div></td>
+        <td><b>First refund request vs retried request</b><div class="mut">changes <code>request_attempts</code>: 1 → 2</div></td>
+        <td>REVIEW → REVIEW</td>
+        <td>AUTO_REFUND → AUTO_REFUND</td>
+        <td>INVARIANT FAILURE</td>
+        <td style="color:#b42318;font-weight:700">critical</td>
+      </tr><tr>
+        <td>pair_05<div class="mut">core</div></td>
+        <td><b>No dispute vs open dispute</b><div class="mut">changes <code>dispute_state</code>: none → open</div></td>
+        <td>REVIEW → REVIEW</td>
+        <td>AUTO_REFUND → AUTO_REFUND</td>
+        <td>UNINTENDED EXPANSION</td>
+        <td style="color:#b42318;font-weight:700">critical</td>
+      </tr><tr>
+        <td>pair_06<div class="mut">core</div></td>
+        <td><b>Normal webhook vs duplicate webhook</b><div class="mut">changes <code>webhook_deliveries</code>: 1 → 2</div></td>
+        <td>REVIEW → REVIEW</td>
+        <td>AUTO_REFUND → AUTO_REFUND</td>
+        <td>INVARIANT FAILURE</td>
+        <td style="color:#b42318;font-weight:700">critical</td>
+      </tr><tr>
+        <td>pair_07<div class="mut">adversarial</div></td>
+        <td><b>Exact boundary 50.00 vs 50.01</b><div class="mut">changes <code>amount</code>: 50.00 → 50.01</div></td>
+        <td>REVIEW → REVIEW</td>
+        <td>AUTO_REFUND → REVIEW</td>
+        <td>AS EXPECTED</td>
+        <td style="color:#0f7b55;font-weight:700">none</td>
+      </tr><tr>
+        <td>pair_08<div class="mut">adversarial</div></td>
+        <td><b>Digital: evidence missing vs confirms non-delivery</b><div class="mut">changes <code>evidence_status</code>: missing → confirms_non_delivery</div></td>
+        <td>REVIEW → REVIEW</td>
+        <td>AUTO_REFUND → AUTO_REFUND</td>
+        <td>UNINTENDED EXPANSION</td>
+        <td style="color:#c2410c;font-weight:700">high</td>
+      </tr><tr>
+        <td>pair_09<div class="mut">adversarial</div></td>
+        <td><b>Existing vs new customer</b><div class="mut">changes <code>customer_history</code>: existing → new</div></td>
+        <td>REVIEW → REVIEW</td>
+        <td>AUTO_REFUND → AUTO_REFUND</td>
+        <td>AS EXPECTED</td>
+        <td style="color:#0f7b55;font-weight:700">none</td>
+      </tr><tr>
+        <td>pair_10<div class="mut">adversarial</div></td>
+        <td><b>Sale vs authorize → void → capture attempt</b><div class="mut">changes <code>payment_flow</code>: sale → authorize_then_void</div></td>
+        <td>REVIEW → REVIEW</td>
+        <td>AUTO_REFUND → AUTO_REFUND</td>
+        <td>AS EXPECTED</td>
+        <td style="color:#0f7b55;font-weight:700">none</td>
+      </tr></tbody></table>
+<h2>Findings</h2><ul><li><b>pair_01 — Physical vs digital product</b> <span class="pill" style="background:#b42318">critical</span><br>Only product_type changes: physical → digital; other facts held constant (40.00 USD, tracking_available=false). Shipment tracking is a physical-goods concept; a digital or service claim cannot be judged by tracking, so the decision must depend on product type. Under the candidate policy the base (product_type=physical) → AUTO_REFUND [TRACKING_UNAVAILABLE, WITHIN_THRESHOLD] and the twin (product_type=digital) → AUTO_REFUND [TRACKING_UNAVAILABLE, WITHIN_THRESHOLD]. Unintended policy expansion: the twin (product_type=digital) received the same AUTO_REFUND outcome as the base (product_type=physical).</li><li><b>pair_03 — USD vs EUR</b> <span class="pill" style="background:#a86400">medium</span><br>Only currency changes: USD → EUR; other facts held constant (40.00 USD, tracking_available=false). The threshold is denominated in one currency. Without a conversion rule, the same number in another currency is a different amount of money. Under the candidate policy the base (currency=USD) → AUTO_REFUND [TRACKING_UNAVAILABLE, WITHIN_THRESHOLD] and the twin (currency=EUR) → AUTO_REFUND [TRACKING_UNAVAILABLE, WITHIN_THRESHOLD]. Ambiguous behavior (CURRENCY_CONVERSION_UNDEFINED): needs human evaluation.</li><li><b>pair_04 — First refund request vs retried request</b> <span class="pill" style="background:#b42318">critical</span><br>Only request_attempts changes: 1 → 2; other facts held constant (40.00 USD, tracking_available=false). A retried request for the same claim must never pay out twice. The decision should stay the same and the money effects must not double. Under the candidate policy the base (request_attempts=1) → AUTO_REFUND [TRACKING_UNAVAILABLE, WITHIN_THRESHOLD] and the twin (request_attempts=2) → AUTO_REFUND [TRACKING_UNAVAILABLE, WITHIN_THRESHOLD]. Financial invariant failed: ONE_REFUND_PER_LOGICAL_REQUEST. Invariant evidence: ONE_REFUND_PER_LOGICAL_REQUEST — logical request claim-run_90284b3e-scenario_08 produced 2 successful refunds (REF-SIM-00023, REF-SIM-00024).</li><li><b>pair_05 — No dispute vs open dispute</b> <span class="pill" style="background:#b42318">critical</span><br>Only dispute_state changes: none → open; other facts held constant (40.00 USD, tracking_available=false). Refunding while a dispute is open risks returning the same money twice, so an open dispute must change the route. Under the candidate policy the base (dispute_state=none) → AUTO_REFUND [TRACKING_UNAVAILABLE, WITHIN_THRESHOLD] and the twin (dispute_state=open) → AUTO_REFUND [TRACKING_UNAVAILABLE, WITHIN_THRESHOLD]. Unintended policy expansion: the twin (dispute_state=open) received the same AUTO_REFUND outcome as the base (dispute_state=none). Invariant evidence: NO_AUTO_REFUND_WITH_OPEN_DISPUTE — 1 automatic refund(s) issued while a dispute was open (double-recovery risk).</li><li><b>pair_06 — Normal webhook vs duplicate webhook</b> <span class="pill" style="background:#b42318">critical</span><br>Only webhook_deliveries changes: 1 → 2; other facts held constant (40.00 USD, tracking_available=false). PayPal can redeliver webhooks. A duplicate delivery must not create a duplicate operation or move local state backwards. Under the candidate policy the base (webhook_deliveries=1) → AUTO_REFUND [TRACKING_UNAVAILABLE, WITHIN_THRESHOLD] and the twin (webhook_deliveries=2) → AUTO_REFUND [TRACKING_UNAVAILABLE, WITHIN_THRESHOLD]. Financial invariant failed: ONE_REFUND_PER_LOGICAL_REQUEST, DUPLICATE_WEBHOOK_NO_DUPLICATE_OPERATION, OLDER_WEBHOOK_NO_STATE_REGRESSION. Invariant evidence: ONE_REFUND_PER_LOGICAL_REQUEST — logical request claim-run_90284b3e-scenario_12 produced 2 successful refunds (REF-SIM-00036, REF-SIM-00037); DUPLICATE_WEBHOOK_NO_DUPLICATE_OPERATION — event WH-run_90284b3e-scenario_12-claim triggered 2 operations across duplicate deliveries; OLDER_WEBHOOK_NO_STATE_REGRESSION — local state moved backwards after event WH-run_90284b3e-scenario_12-captured (to COMPLETED).</li><li><b>pair_08 — Digital: evidence missing vs confirms non-delivery</b> <span class="pill" style="background:#c2410c">high</span><br>Only evidence_status changes: missing → confirms_non_delivery; other facts held constant (40.00 USD, tracking_available=false). For goods without shipment tracking, the decision must hinge on delivery/access evidence: confirmed non-delivery and missing evidence are not the same case. Under the candidate policy the base (evidence_status=missing) → AUTO_REFUND [TRACKING_UNAVAILABLE, WITHIN_THRESHOLD] and the twin (evidence_status=confirms_non_delivery) → AUTO_REFUND [TRACKING_UNAVAILABLE, WITHIN_THRESHOLD]. Unintended policy expansion: the twin (evidence_status=confirms_non_delivery) received the same AUTO_REFUND outcome as the base (evidence_status=missing).</li></ul>
+<h2>Estimated impact <span class="pill" style="background:#a86400">SYNTHETIC</span></h2>
+<p><b>1,295 potentially affected transactions (about $29,419) in the synthetic impact model.</b> 6 of 10 twin pairs behaved unexpectedly under Version B. Physical vs digital product: 870 synthetic transactions (~$18,400). USD vs EUR: 310 synthetic transactions (~$8,370). First refund request vs retried request: 26 synthetic transactions (~$520). No dispute vs open dispute: 41 synthetic transactions (~$1,169). Normal webhook vs duplicate webhook: 48 synthetic transactions (~$960). These figures come from the synthetic model only; they are not PayPal data.</p>
+<table><thead><tr><th>Finding</th><th>Kind</th><th>Synthetic transactions</th><th>Synthetic value</th></tr></thead><tbody><tr><td>pair_01 Physical vs digital product</td><td>potentially incorrect refunds</td><td>870</td><td>$18,400</td></tr><tr><td>pair_03 USD vs EUR</td><td>exposure (ambiguous)</td><td>310</td><td>$8,370</td></tr><tr><td>pair_04 First refund request vs retried request</td><td>potentially incorrect refunds</td><td>26</td><td>$520</td></tr><tr><td>pair_05 No dispute vs open dispute</td><td>potentially incorrect refunds</td><td>41</td><td>$1,169</td></tr><tr><td>pair_06 Normal webhook vs duplicate webhook</td><td>potentially incorrect refunds</td><td>48</td><td>$960</td></tr></tbody></table>
+<h3>Facts (observed in this run)</h3><ul><li>pair_01 (Physical vs digital product): Unintended policy expansion: the twin (product_type=digital) received the same AUTO_REFUND outcome as the base (product_type=physical).</li><li>pair_03 (USD vs EUR): Ambiguous behavior (CURRENCY_CONVERSION_UNDEFINED): needs human evaluation.</li><li>pair_04 (First refund request vs retried request): Financial invariant failed: ONE_REFUND_PER_LOGICAL_REQUEST.</li><li>pair_05 (No dispute vs open dispute): Unintended policy expansion: the twin (dispute_state=open) received the same AUTO_REFUND outcome as the base (dispute_state=none).</li><li>pair_06 (Normal webhook vs duplicate webhook): Financial invariant failed: ONE_REFUND_PER_LOGICAL_REQUEST, DUPLICATE_WEBHOOK_NO_DUPLICATE_OPERATION, OLDER_WEBHOOK_NO_STATE_REGRESSION.</li><li>pair_08 (Digital: evidence missing vs confirms non-delivery): Unintended policy expansion: the twin (evidence_status=confirms_non_delivery) received the same AUTO_REFUND outcome as the base (evidence_status=missing).</li></ul>
+<h3>Assumptions (synthetic model — not PayPal data)</h3><ul><li>SYNTHETIC illustrative dataset — not PayPal data: 100,000 monthly transactions, 24,000 at or below the threshold, 3,200 missing-tracking claims.</li><li>Physical vs digital product: 870 of 3200 synthetic missing-tracking claims are digital; synthetic value $18,400.</li><li>USD vs EUR: 310 synthetic non-USD claims at an average $27 evaluated without a conversion rule.</li><li>First refund request vs retried request: 26 synthetic retried refund requests at an average $20 duplicated.</li><li>No dispute vs open dispute: 41 synthetic eligible claims with an open dispute at an average $28.5.</li><li>Normal webhook vs duplicate webhook: 48 synthetic duplicate webhook deliveries at an average $20 duplicated.</li></ul>
+<p class="mut">Affected customer types: Buyers of digital goods and services; Buyers paying in non-USD currencies; Merchants whose buyers or systems retry refund requests; Buyers with an open dispute on the same order; Merchants who receive redelivered webhooks</p>
+<h2>Test coverage</h2>
+<p>Required categories: <code>amount_boundary</code> <code>product_type</code> <code>duplicate_request</code> <code>duplicate_webhook</code> <code>dispute_state</code> <code>currency_variation</code><br>Covered: <code>product_type</code> <code>amount_boundary</code> <code>currency_variation</code> <code>duplicate_request</code> <code>dispute_state</code> <code>duplicate_webhook</code> <code>evidence_status</code> <code>customer_history</code> <code>void_authorization</code><br>All required categories were covered.</p>
+<h2>Deterministic invariants</h2>
+<table><thead><tr><th>Invariant</th><th>Passed</th><th>Failed</th><th>N/A</th></tr></thead><tbody><tr><td><code>REFUND_TOTAL_LTE_CAPTURE</code><div class="mut">Successful refund total ≤ captured amount</div></td><td>19</td><td style="color:inherit;font-weight:400">0</td><td>1</td></tr><tr><td><code>ONE_REFUND_PER_LOGICAL_REQUEST</code><div class="mut">One logical request → at most one successful refund</div></td><td>15</td><td style="color:#b42318;font-weight:700">2</td><td>3</td></tr><tr><td><code>REFUND_CURRENCY_MATCHES_CAPTURE</code><div class="mut">Refund currency = capture currency</div></td><td>17</td><td style="color:inherit;font-weight:400">0</td><td>3</td></tr><tr><td><code>REFUND_PAYEE_MATCHES_ORIGINAL</code><div class="mut">Refund payee = original payee</div></td><td>17</td><td style="color:inherit;font-weight:400">0</td><td>3</td></tr><tr><td><code>VOIDED_AUTH_NOT_CAPTURED</code><div class="mut">A voided authorization cannot later be captured</div></td><td>1</td><td style="color:inherit;font-weight:400">0</td><td>19</td></tr><tr><td><code>DUPLICATE_WEBHOOK_NO_DUPLICATE_OPERATION</code><div class="mut">A duplicate webhook cannot create a duplicate operation</div></td><td>0</td><td style="color:#b42318;font-weight:700">1</td><td>19</td></tr><tr><td><code>OLDER_WEBHOOK_NO_STATE_REGRESSION</code><div class="mut">An older webhook cannot overwrite newer PayPal state</div></td><td>16</td><td style="color:#b42318;font-weight:700">1</td><td>3</td></tr><tr><td><code>NO_AUTO_REFUND_WITH_OPEN_DISPUTE</code><div class="mut">No automatic refund while a dispute is open</div></td><td>0</td><td style="color:#b42318;font-weight:700">1</td><td>19</td></tr></tbody></table>
+<h2>Recommended policy correction</h2>
+       <p class="mut">Proposed by the Policy Repair agent (deterministic). A human must approve it; it is then re-tested against every scenario.</p>
+       <div class="grid2"><div><h3>Proposed (Version B)</h3><pre>Automatically refund transactions of $50 or less when tracking information is unavailable.</pre></div>
+       <div><h3>Corrected (Version C)</h3><pre>For physical goods of $50 or less, automatically refund a missing-delivery claim when valid shipment tracking is unavailable. For digital goods, require digital-delivery or access evidence. If the evidence is missing or conflicting, send the case for review. Apply the same evidence requirement to services. Only USD transactions are in scope; transactions in any other currency go to review until a conversion rule is approved. If a dispute is open on the transaction, send the case for review. Treat retried refund requests as the same logical request using a stable PayPal-Request-Id, and ignore duplicate webhook deliveries using event-ID deduplication.</pre></div></div>
+       <table><thead><tr><th>Field</th><th>From</th><th>To</th><th>Why</th></tr></thead><tbody>
+       <tr><td><code>product_scope.physical</code></td><td>unspecified</td><td>tracking_rule</td><td>Keep the original objective: the tracking rule applies to physical goods.</td></tr><tr><td><code>product_scope.digital</code></td><td>unspecified</td><td>evidence_rule</td><td>Pair pair_01 failed: tracking does not exist for digital goods; require delivery/access evidence and review when it is missing or conflicting.</td></tr><tr><td><code>product_scope.service</code></td><td>unspecified</td><td>evidence_rule</td><td>Services have no shipment tracking either; apply the same evidence requirement.</td></tr><tr><td><code>currency_handling</code></td><td>unspecified</td><td>manual_review_other_currency</td><td>Pair pair_03 failed: the threshold is in USD and no conversion rule exists, so other currencies go to review.</td></tr><tr><td><code>dispute_handling</code></td><td>unspecified</td><td>manual_review_if_open_dispute</td><td>Pair pair_05 failed: refunding while a dispute is open risks double recovery.</td></tr><tr><td><code>retry_handling</code></td><td>unspecified</td><td>idempotent_stable_request_id</td><td>Pair pair_04 failed: a retried request must reuse one stable PayPal-Request-Id.</td></tr><tr><td><code>duplicate_event_handling</code></td><td>unspecified</td><td>dedupe_by_event_id</td><td>Pair pair_06 failed: duplicate webhook deliveries must be ignored by event id.</td></tr>
+       </tbody></table>
+       <p>The original objective (automatic refunds up to the threshold when tracking is unavailable) is preserved. Each change fills a behaviour the proposed policy left unspecified, using the most conservative treatment: send the case to a human.</p>
+       <p class="mut">Status: approved — re-run as run_ab573bda</p>
+<h2>Human decision</h2><p><b>REJECT</b> by release.manager (demo) at 2026-11-07T03:22:08.693Z (recommendation was BLOCK). Note: Blocked: apply the repair and re-run.</p>
+<h2>Audit trail</h2><table><thead><tr><th>Time</th><th>Event</th><th>Actor</th><th>Payload hash</th></tr></thead><tbody><tr><td>2026-11-07T03:22:08.667Z</td><td>test_run_created</td><td>policy.analyst (demo user)</td><td><code>38ec19e1ef07</code></td></tr><tr><td>2026-11-07T03:22:08.670Z</td><td>twins_generated</td><td>agent:transaction_twin_generator</td><td><code>8d6764341344</code></td></tr><tr><td>2026-11-07T03:22:08.672Z</td><td>policies_evaluated</td><td>engine:deterministic</td><td><code>d7732e870a14</code></td></tr><tr><td>2026-11-07T03:22:08.688Z</td><td>repair_proposed</td><td>agent:policy_repair</td><td><code>a7d223528fb0</code></td></tr><tr><td>2026-11-07T03:22:08.688Z</td><td>release_recommendation</td><td>engine:deterministic</td><td><code>6cc9f0c777eb</code></td></tr><tr><td>2026-11-07T03:22:08.693Z</td><td>human_decision</td><td>release.manager (demo)</td><td><code>c60b0aebb4eb</code></td></tr><tr><td>2026-11-07T03:22:08.693Z</td><td>repair_approved</td><td>release.manager (demo)</td><td><code>27ed5a4953c2</code></td></tr></tbody></table>
+<h2>Pipeline</h2><p>AI proposes → Code validates → Sandbox executes → Code verifies → Human decides</p>
+<p class="mut">PolicyTwin helps teams discover policy ambiguity and financial regressions before release.</p>
+</main></body></html>

@@ -1,0 +1,157 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  --run-header-bottom: 128px; /* set at runtime by the sticky run header so the evidence drawer sits below it */
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-padding-top: 140px;
+}
+/* In the base layer so utilities such as text-white on a heading win over these defaults. */
+@layer base {
+  body {
+    @apply bg-canvas font-sans text-ink antialiased;
+    font-feature-settings: 'cv11', 'ss01';
+  }
+  h1,
+  h2,
+  h3 {
+    @apply font-display tracking-tight text-ink;
+  }
+}
+::selection {
+  background: rgba(57, 135, 245, 0.25);
+}
+
+/* Visible focus for everything keyboard-reachable */
+:focus-visible {
+  outline: 2px solid #1769e0;
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+.on-navy :focus-visible {
+  outline-color: #7fb2ff;
+}
+
+@layer components {
+  .card {
+    @apply rounded-xl border border-line bg-surface shadow-card;
+  }
+  .card-lift {
+    @apply transition duration-200 ease-out hover:-translate-y-0.5 hover:shadow-lift;
+  }
+  .btn {
+    @apply inline-flex min-h-9 select-none items-center justify-center gap-2 rounded-lg px-3.5 py-2 text-sm font-semibold transition duration-150 ease-out active:translate-y-px disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-primary {
+    @apply btn bg-brand text-white shadow-sm hover:bg-brand-ink;
+  }
+  .btn-navy {
+    @apply btn bg-navy text-white hover:bg-navy-3;
+  }
+  .btn-ghost {
+    @apply btn border border-line-strong bg-surface text-ink hover:border-brand/50 hover:bg-brand-bg;
+  }
+  .btn-quiet {
+    @apply btn text-ink-mute hover:bg-surface-2 hover:text-ink;
+  }
+  .btn-danger {
+    @apply btn bg-block text-white hover:bg-block-ink;
+  }
+  .btn-pass {
+    @apply btn bg-pass text-white hover:bg-pass-ink;
+  }
+  .field {
+    @apply w-full rounded-lg border border-line-strong bg-surface px-3 py-2 text-sm text-ink placeholder:text-ink-mute/80 transition focus:border-brand focus:outline-none focus:shadow-ring;
+  }
+  .field[aria-invalid='true'] {
+    @apply border-block;
+  }
+  .label {
+    @apply mb-1.5 block text-[11px] font-semibold uppercase tracking-[0.08em] text-ink-mute;
+  }
+  .kbd {
+    @apply inline-flex min-w-[1.4rem] items-center justify-center rounded-md border border-line-strong bg-surface-2 px-1.5 py-0.5 font-mono text-[11px] font-medium text-ink-mute;
+  }
+  .mono {
+    @apply font-mono text-[12px];
+  }
+  .sr-only-focusable:not(:focus) {
+    @apply sr-only;
+  }
+  .skeleton {
+    @apply relative overflow-hidden rounded-md bg-surface-2;
+  }
+  .skeleton::after {
+    content: '';
+    @apply absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/70 to-transparent;
+    animation: shimmer 1.4s infinite;
+  }
+}
+
+pre.json {
+  @apply max-w-full overflow-x-auto whitespace-pre-wrap break-words rounded-lg border border-line bg-surface-2 p-3 font-mono text-[12px] leading-relaxed text-ink;
+}
+
+/* AG Grid: PolicyTwin theme details that the theming API does not cover */
+.pt-grid .ag-row {
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+.pt-grid .ag-row.sev-critical {
+  box-shadow: inset 4px 0 0 #c9363e;
+}
+.pt-grid .ag-row.sev-high {
+  box-shadow: inset 4px 0 0 #c77a08;
+}
+.pt-grid .ag-row.sev-medium {
+  box-shadow: inset 4px 0 0 #e0b04a;
+}
+.pt-grid .ag-row.sev-none {
+  box-shadow: inset 4px 0 0 #11875d;
+}
+.pt-grid .ag-row.ag-row-selected {
+  background-color: #eaf3ff !important;
+}
+.pt-grid .ag-cell {
+  display: flex;
+  align-items: center;
+}
+.pt-grid .ag-header-cell-label {
+  font-weight: 600;
+}
+
+/* Touch targets: 44px minimum on touch devices */
+@media (pointer: coarse) {
+  .btn,
+  .field,
+  button[role='tab'],
+  .tap {
+    min-height: 44px !important; /* also wins over compact utilities such as !min-h-8 */
+  }
+}
+
+/* Motion is information, not decoration — and it can be turned off */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@media print {
+  aside,
+  header,
+  footer,
+  .no-print {
+    display: none !important;
+  }
+}

@@ -1,0 +1,59 @@
+# Render Blueprint for PolicyTwin.
+# Plan ids below were checked against https://render.com/docs/blueprint-spec (Nov 2026):
+# web services accept `free`, `0.5c-512mb`, `1c-2g`, …; databases accept `free`, `0.1c-256mb`, ….
+# `free` keeps the demo at no cost (the web service sleeps when idle; free Postgres is time-limited —
+# check Render's current terms). Use `0.5c-512mb` / `0.1c-256mb` or larger for anything you want to keep.
+#
+# SECURITY: a public URL must not be an open financial-test console. DEMO_PASSCODE (you choose it, then share it with
+# reviewers) and SESSION_SECRET (generated) are REQUIRED — without them the app answers 503 AUTH_NOT_CONFIGURED.
+# The in-process rate limiter assumes ONE instance; do not scale this service horizontally without moving the counters
+# to the database or a gateway.
+# Schema v2 requires a fresh database (the app refuses to start on an old v1 schema).
+services:
+  - type: web
+    name: policytwin
+    runtime: node
+    plan: free
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: 22
+      - key: DATABASE_URL
+        fromDatabase:
+          name: policytwin-db
+          property: connectionString
+      # Access control (required)
+      - key: DEMO_PASSCODE
+        sync: false
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: SESSION_TTL_HOURS
+        value: 8
+      # Abuse limits
+      - key: MAX_RUNS_PER_SESSION
+        value: 12
+      - key: MAX_POLICIES_PER_SESSION
+        value: 20
+      - key: MAX_AI_CALLS_PER_DAY
+        value: 150
+      # OpenAI (optional; unset → deterministic agents)
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: OPENAI_MODEL
+        value: gpt-4o
+      # PayPal Sandbox (optional; unset → simulated PayPal)
+      - key: PAYPAL_CLIENT_ID
+        sync: false
+      - key: PAYPAL_CLIENT_SECRET
+        sync: false
+      - key: PAYPAL_BASE_URL
+        value: https://api-m.sandbox.paypal.com
+      - key: PAYPAL_WEBHOOK_ID
+        sync: false
+      # Direct-card Sandbox testing is intentionally NOT configured here (it is off by default; see .env.example and the README).
+
+databases:
+  - name: policytwin-db
+    plan: free

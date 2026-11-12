@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PolicyTwin release report — Low-Value Missing-Delivery Refund — run_ab573bda</title>
+<style>
+ :root{--ink:#0b1b33;--mut:#64748b;--line:#e2ddd2;--paper:#f6f4ef}
+ *{box-sizing:border-box} body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+ main{max-width:1040px;margin:0 auto;padding:32px 20px 64px} h1{font:700 28px/1.2 Georgia,serif;margin:0 0 4px} h2{font:700 20px Georgia,serif;margin:36px 0 8px} h3{font-size:14px;margin:12px 0 6px}
+ .mut{color:var(--mut);font-size:13px} code,pre{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px} pre{white-space:pre-wrap;background:#fff;border:1px solid var(--line);padding:12px;border-radius:8px}
+ table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden;font-size:13.5px} th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top} th{background:#faf8f3;font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--mut)}
+ .banner{border-radius:12px;padding:18px 22px;margin:20px 0;border:1px solid #0f7b55;background:#e3f4ec;color:#0f7b55} .banner .v{font:800 34px/1 Georgia,serif;letter-spacing:.02em}
+ .disc{border:1px dashed #a86400;background:#fffaf0;border-radius:10px;padding:12px 16px;font-size:13px} .disc ul{margin:6px 0 0;padding-left:18px}
+ .badges span{display:inline-block;border:1px solid var(--line);background:#fff;border-radius:999px;padding:2px 10px;font-size:12px;margin-right:6px}
+ .pill{color:#fff;border-radius:999px;padding:1px 8px;font-size:11px;font-weight:700} .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} li{margin:10px 0}
+ .kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:14px 0} .kpi{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px} .kpi b{display:block;font:700 22px Georgia,serif}
+ @media print{body{background:#fff}main{padding:0}} @media(max-width:720px){.grid2,.kpis{grid-template-columns:1fr 1fr}}
+</style></head><body><main>
+<p class="mut">PayPal PolicyTwin · counterfactual testing for safer financial-policy releases</p>
+<h1>Low-Value Missing-Delivery Refund</h1>
+<div class="badges"><span>Run run_ab573bda</span><span>Candidate: Version C</span>
+<span>Executed in: SIMULATED sandbox (not PayPal)</span><span>AI: deterministic agents (no model)</span><span>Re-run of run_90284b3e</span><span>2026-11-07T03:22:08.703Z</span></div>
+<div class="disc"><b>Read this first.</b><ul><li>The policies are fictional examples.</li><li>The impact data is synthetic.</li><li>The Sandbox uses test money (or an in-process simulator when no Sandbox credentials are configured).</li><li>PolicyTwin does not represent PayPal’s current internal systems.</li><li>It is not legal or compliance advice.</li><li>The AI recommends; deterministic rules verify.</li><li>A human makes the final release decision.</li></ul></div>
+<div class="banner"><div class="mut" style="color:inherit">Release recommendation (not an approval)</div><div class="v">PASS</div>
+<ul><li>No material regression detected across 10 twin pairs; every applicable deterministic invariant held.</li></ul></div>
+<div class="kpis"><div class="kpi"><b>10</b>twin pairs</div><div class="kpi"><b>10</b>as expected</div><div class="kpi"><b>0</b>critical</div><div class="kpi"><b>0</b>invariant failures</div><div class="kpi"><b>100%</b>required coverage</div></div>
+<h2>Twin matrix</h2>
+<table><thead><tr><th>Pair</th><th>Changed variable</th><th>Old (A) base → twin</th><th>New (C) base → twin</th><th>Result</th><th>Severity</th></tr></thead><tbody><tr>
+        <td>pair_01<div class="mut">core</div></td>
+        <td><b>Physical vs digital product</b><div class="mut">changes <code>product_type</code>: physical → digital</div></td>
+        <td>REVIEW → REVIEW</td>
+        <td>AUTO_REFUND → REVIEW</td>
+        <td>AS EXPECTED</td>
+        <td style="color:#0f7b55;font-weight:700">none</td>
+      </tr><tr>
+        <td>pair_02<div class="mut">core</div></td>
+        <td><b>49.99 vs 50.01 (threshold)</b><div class="mut">changes <code>amount</code>: 49.99 → 50.01</div></td>
+        <td>REVIEW → REVIEW</td>
+        <td>AUTO_REFUND → REVIEW</td>
+        <td>AS EXPECTED</td>
+        <td style="color:#0f7b55;font-weight:700">none</td>
+      </tr><tr>
+        <td>pair_03<div class="mut">core</div></td>
+        <td><b>USD vs EUR</b><div class="mut">changes <code>currency</code>: USD → EUR</div></td>
+        <td>REVIEW → REVIEW</td>
+        <td>AUTO_REFUND → REVIEW</td>
+        <td>AS EXPECTED</td>
+        <td style="color:#0f7b55;font-weight:700">none</td>
+      </tr><tr>
+        <td>pair_04<div class="mut">core</div></td>
+        <td><b>First refund request vs retried request</b><div class="mut">changes <code>request_attempts</code>: 1 → 2</div></td>
+        <td>REVIEW → REVIEW</td>
+        <td>AUTO_REFUND → AUTO_REFUND</td>
+        <td>AS EXPECTED</td>
+        <td style="color:#0f7b55;font-weight:700">none</td>
+      </tr><tr>
+        <td>pair_05<div class="mut">core</div></td>
+        <td><b>No dispute vs open dispute</b><div class="mut">changes <code>dispute_state</code>: none → open</div></td>
+        <td>REVIEW → REVIEW</td>
+        <td>AUTO_REFUND → REVIEW</td>
+        <td>AS EXPECTED</td>
+        <td style="color:#0f7b55;font-weight:700">none</td>
+      </tr><tr>
+        <td>pair_06<div class="mut">core</div></td>
+        <td><b>Normal webhook vs duplicate webhook</b><div class="mut">changes <code>webhook_deliveries</code>: 1 → 2</div></td>
+        <td>REVIEW → REVIEW</td>
+        <td>AUTO_REFUND → AUTO_REFUND</td>
+        <td>AS EXPECTED</td>
+        <td style="color:#0f7b55;font-weight:700">none</td>
+      </tr><tr>
+        <td>pair_07<div class="mut">adversarial</div></td>
+        <td><b>Exact boundary 50.00 vs 50.01</b><div class="mut">changes <code>amount</code>: 50.00 → 50.01</div></td>
+        <td>REVIEW → REVIEW</td>
+        <td>AUTO_REFUND → REVIEW</td>
+        <td>AS EXPECTED</td>
+        <td style="color:#0f7b55;font-weight:700">none</td>
+      </tr><tr>
+        <td>pair_08<div class="mut">adversarial</div></td>
+        <td><b>Digital: evidence missing vs confirms non-delivery</b><div class="mut">changes <code>evidence_status</code>: missing → confirms_non_delivery</div></td>
+        <td>REVIEW → REVIEW</td>
+        <td>REVIEW → AUTO_REFUND</td>
+        <td>AS EXPECTED</td>
+        <td style="color:#0f7b55;font-weight:700">none</td>
+      </tr><tr>
+        <td>pair_09<div class="mut">adversarial</div></td>
+        <td><b>Existing vs new customer</b><div class="mut">changes <code>customer_history</code>: existing → new</div></td>
+        <td>REVIEW → REVIEW</td>
+        <td>AUTO_REFUND → AUTO_REFUND</td>
+        <td>AS EXPECTED</td>
+        <td style="color:#0f7b55;font-weight:700">none</td>
+      </tr><tr>
+        <td>pair_10<div class="mut">adversarial</div></td>
+        <td><b>Sale vs authorize → void → capture attempt</b><div class="mut">changes <code>payment_flow</code>: sale → authorize_then_void</div></td>
+        <td>REVIEW → REVIEW</td>
+        <td>AUTO_REFUND → AUTO_REFUND</td>
+        <td>AS EXPECTED</td>
+        <td style="color:#0f7b55;font-weight:700">none</td>
+      </tr></tbody></table>
+
+<h2>Estimated impact <span class="pill" style="background:#a86400">SYNTHETIC</span></h2>
+<p><b>No failed scenarios, so no impact was estimated.</b> All 10 twin pairs behaved as expected under Version C.</p>
+
+<h3>Facts (observed in this run)</h3><ul><li>No failed scenarios.</li></ul>
+<h3>Assumptions (synthetic model — not PayPal data)</h3><ul><li>SYNTHETIC illustrative dataset — not PayPal data. No failed pair, so no impact was estimated.</li></ul>
+
+<h2>Test coverage</h2>
+<p>Required categories: <code>amount_boundary</code> <code>product_type</code> <code>duplicate_request</code> <code>duplicate_webhook</code> <code>dispute_state</code> <code>currency_variation</code> <code>evidence_status</code><br>Covered: <code>product_type</code> <code>amount_boundary</code> <code>currency_variation</code> <code>duplicate_request</code> <code>dispute_state</code> <code>duplicate_webhook</code> <code>evidence_status</code> <code>customer_history</code> <code>void_authorization</code><br>All required categories were covered.</p>
+<h2>Deterministic invariants</h2>
+<table><thead><tr><th>Invariant</th><th>Passed</th><th>Failed</th><th>N/A</th></tr></thead><tbody><tr><td><code>REFUND_TOTAL_LTE_CAPTURE</code><div class="mut">Successful refund total ≤ captured amount</div></td><td>19</td><td style="color:inherit;font-weight:400">0</td><td>1</td></tr><tr><td><code>ONE_REFUND_PER_LOGICAL_REQUEST</code><div class="mut">One logical request → at most one successful refund</div></td><td>13</td><td style="color:inherit;font-weight:400">0</td><td>7</td></tr><tr><td><code>REFUND_CURRENCY_MATCHES_CAPTURE</code><div class="mut">Refund currency = capture currency</div></td><td>13</td><td style="color:inherit;font-weight:400">0</td><td>7</td></tr><tr><td><code>REFUND_PAYEE_MATCHES_ORIGINAL</code><div class="mut">Refund payee = original payee</div></td><td>13</td><td style="color:inherit;font-weight:400">0</td><td>7</td></tr><tr><td><code>VOIDED_AUTH_NOT_CAPTURED</code><div class="mut">A voided authorization cannot later be captured</div></td><td>1</td><td style="color:inherit;font-weight:400">0</td><td>19</td></tr><tr><td><code>DUPLICATE_WEBHOOK_NO_DUPLICATE_OPERATION</code><div class="mut">A duplicate webhook cannot create a duplicate operation</div></td><td>1</td><td style="color:inherit;font-weight:400">0</td><td>19</td></tr><tr><td><code>OLDER_WEBHOOK_NO_STATE_REGRESSION</code><div class="mut">An older webhook cannot overwrite newer PayPal state</div></td><td>13</td><td style="color:inherit;font-weight:400">0</td><td>7</td></tr><tr><td><code>NO_AUTO_REFUND_WITH_OPEN_DISPUTE</code><div class="mut">No automatic refund while a dispute is open</div></td><td>1</td><td style="color:inherit;font-weight:400">0</td><td>19</td></tr></tbody></table>
+
+<h2>Human decision</h2><p>No human release decision has been recorded yet. The recommendation above is not an approval.</p>
+<h2>Audit trail</h2><table><thead><tr><th>Time</th><th>Event</th><th>Actor</th><th>Payload hash</th></tr></thead><tbody><tr><td>2026-11-07T03:22:08.693Z</td><td>test_run_created</td><td>release.manager (demo)</td><td><code>d857404bc31b</code></td></tr><tr><td>2026-11-07T03:22:08.694Z</td><td>twins_generated</td><td>agent:transaction_twin_generator</td><td><code>8d6764341344</code></td></tr><tr><td>2026-11-07T03:22:08.695Z</td><td>policies_evaluated</td><td>engine:deterministic</td><td><code>d7732e870a14</code></td></tr><tr><td>2026-11-07T03:22:08.704Z</td><td>release_recommendation</td><td>engine:deterministic</td><td><code>1b588c395a2d</code></td></tr></tbody></table>
+<h2>Pipeline</h2><p>AI proposes → Code validates → Sandbox executes → Code verifies → Human decides</p>
+<p class="mut">PolicyTwin helps teams discover policy ambiguity and financial regressions before release.</p>
+</main></body></html>

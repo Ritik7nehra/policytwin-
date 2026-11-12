@@ -1,0 +1,257 @@
+[
+  {
+    "id": "e01-demo-proposed",
+    "text": "Automatically refund transactions of $50 or less when tracking information is unavailable.",
+    "context": "Low-Value Missing-Delivery Refund. All missing-delivery claims require manual review.",
+    "expect": {
+      "trigger": "missing_delivery_claim",
+      "action": "automatic_refund",
+      "maximum_amount": 50,
+      "currency": "USD",
+      "threshold_inclusive": true,
+      "condition": "tracking_unavailable",
+      "exceptions": [],
+      "ambiguities_include": [
+        "PRODUCT_SCOPE",
+        "SERVICE_EVIDENCE",
+        "CURRENCY_CONVERSION",
+        "DISPUTE_STATE",
+        "RETRY_BEHAVIOR",
+        "DUPLICATE_EVENTS"
+      ]
+    }
+  },
+  {
+    "id": "e02-demo-current",
+    "text": "All missing-delivery claims require manual review.",
+    "context": "",
+    "expect": {
+      "trigger": "missing_delivery_claim",
+      "action": "manual_review",
+      "maximum_amount": null,
+      "exceptions": [],
+      "ambiguities_include": [],
+      "ambiguities_exclude": [
+        "PRODUCT_SCOPE",
+        "RETRY_BEHAVIOR"
+      ]
+    }
+  },
+  {
+    "id": "e03-exclusive-threshold",
+    "text": "Automatically refund missing-delivery claims below $25 when tracking is unavailable.",
+    "context": "",
+    "expect": {
+      "trigger": "missing_delivery_claim",
+      "action": "automatic_refund",
+      "maximum_amount": 25,
+      "currency": "USD",
+      "threshold_inclusive": false,
+      "condition": "tracking_unavailable",
+      "exceptions": []
+    }
+  },
+  {
+    "id": "e04-no-evidence-condition",
+    "text": "Automatically refund item-not-received claims up to $100.",
+    "context": "",
+    "expect": {
+      "trigger": "missing_delivery_claim",
+      "action": "automatic_refund",
+      "maximum_amount": 100,
+      "threshold_inclusive": true,
+      "condition": "always",
+      "exceptions": [],
+      "ambiguities_include": [
+        "NO_CONDITION"
+      ]
+    }
+  },
+  {
+    "id": "e05-euro-threshold",
+    "text": "Auto-refund missing-delivery claims of €30 or less when tracking is unavailable.",
+    "context": "",
+    "expect": {
+      "trigger": "missing_delivery_claim",
+      "action": "automatic_refund",
+      "maximum_amount": 30,
+      "currency": "EUR",
+      "threshold_inclusive": true,
+      "condition": "tracking_unavailable",
+      "exceptions": [],
+      "ambiguities_include": [
+        "CURRENCY_CONVERSION"
+      ]
+    }
+  },
+  {
+    "id": "e06-physical-vs-digital-defined",
+    "text": "For physical goods of $75 or less, automatically refund a missing-delivery claim when tracking is unavailable. For digital goods, require access evidence; if the evidence is missing, send the case for review.",
+    "context": "",
+    "expect": {
+      "trigger": "missing_delivery_claim",
+      "action": "automatic_refund",
+      "maximum_amount": 75,
+      "currency": "USD",
+      "condition": "tracking_unavailable",
+      "exceptions": [],
+      "product_scope": {
+        "physical": "tracking_rule",
+        "digital": "evidence_rule"
+      },
+      "ambiguities_include": [
+        "SERVICE_EVIDENCE"
+      ],
+      "ambiguities_exclude": [
+        "PRODUCT_SCOPE"
+      ]
+    }
+  },
+  {
+    "id": "e07-dispute-rule-stated",
+    "text": "Automatically refund missing-delivery claims of $40 or less when tracking is unavailable. If a dispute is open on the transaction, send the case to manual review.",
+    "context": "",
+    "expect": {
+      "trigger": "missing_delivery_claim",
+      "action": "automatic_refund",
+      "maximum_amount": 40,
+      "dispute_handling": "manual_review_if_open_dispute",
+      "exceptions": [],
+      "ambiguities_include": [
+        "PRODUCT_SCOPE"
+      ],
+      "ambiguities_exclude": [
+        "DISPUTE_STATE"
+      ]
+    }
+  },
+  {
+    "id": "e08-currency-scope-stated",
+    "text": "Automatically refund missing-delivery claims up to $60 when tracking is unavailable. Only USD transactions are in scope; transactions in other currencies go to review.",
+    "context": "",
+    "expect": {
+      "trigger": "missing_delivery_claim",
+      "action": "automatic_refund",
+      "maximum_amount": 60,
+      "currency": "USD",
+      "currency_handling": "manual_review_other_currency",
+      "exceptions": [],
+      "ambiguities_exclude": [
+        "CURRENCY_CONVERSION"
+      ]
+    }
+  },
+  {
+    "id": "e09-idempotency-stated",
+    "text": "Automatically refund missing-delivery claims of $20 or less when tracking is unavailable. Treat retried refund requests as the same logical request using a stable PayPal-Request-Id, and ignore duplicate webhook deliveries using event-ID deduplication.",
+    "context": "",
+    "expect": {
+      "trigger": "missing_delivery_claim",
+      "action": "automatic_refund",
+      "maximum_amount": 20,
+      "retry_handling": "idempotent_stable_request_id",
+      "duplicate_event_handling": "dedupe_by_event_id",
+      "exceptions": [],
+      "ambiguities_include": [
+        "PRODUCT_SCOPE",
+        "DISPUTE_STATE"
+      ],
+      "ambiguities_exclude": [
+        "RETRY_BEHAVIOR",
+        "DUPLICATE_EVENTS"
+      ]
+    }
+  },
+  {
+    "id": "e10-unsupported-trigger",
+    "text": "Automatically approve credit limit increases under $500.",
+    "context": "",
+    "expect": {
+      "trigger": "unrecognized",
+      "action": "manual_review",
+      "ambiguities_include": [
+        "UNSUPPORTED_TRIGGER"
+      ]
+    },
+    "note": "Out-of-scope policy: the contract is to flag UNSUPPORTED_TRIGGER and fail safe to manual review. The reader only extracts a numeric cap for automatic-refund policies (\"over $50 needs review\" would otherwise be misread as a maximum), so no threshold is asserted."
+  },
+  {
+    "id": "e11-service-excluded",
+    "text": "Missing-delivery claims for services are excluded from automatic refunds and go to manual review. Automatically refund physical goods of $50 or less when tracking is unavailable.",
+    "context": "",
+    "expect": {
+      "trigger": "missing_delivery_claim",
+      "action": "automatic_refund",
+      "maximum_amount": 50,
+      "product_scope": {
+        "physical": "tracking_rule",
+        "service": "manual_review"
+      },
+      "ambiguities_exclude": [
+        "SERVICE_EVIDENCE",
+        "UNMODELED_EXCEPTION"
+      ],
+      "exceptions_mention": [
+        "services"
+      ]
+    },
+    "note": "The exclusion is stated in the text, so recording that sentence as an exception is faithful, not invented."
+  },
+  {
+    "id": "e12-stated-exception-kept",
+    "text": "Automatically refund missing-delivery claims of $50 or less when tracking is unavailable, except for new customers.",
+    "context": "",
+    "expect": {
+      "trigger": "missing_delivery_claim",
+      "action": "automatic_refund",
+      "maximum_amount": 50,
+      "exceptions_mention": [
+        "new customer"
+      ],
+      "ambiguities_include": [
+        "UNMODELED_EXCEPTION"
+      ]
+    },
+    "note": "A business exception the engine cannot execute must be kept AND flagged, so the release can never be a clean PASS."
+  },
+  {
+    "id": "e13-thousands-separator",
+    "text": "Automatically refund missing-delivery claims of $1,000 or less when tracking is unavailable.",
+    "context": "",
+    "expect": {
+      "trigger": "missing_delivery_claim",
+      "action": "automatic_refund",
+      "maximum_amount": 1000,
+      "threshold_inclusive": true,
+      "exceptions": []
+    }
+  },
+  {
+    "id": "e14-cents-in-threshold",
+    "text": "Automatically refund missing-delivery claims of $50.50 or less when there is no tracking information.",
+    "context": "",
+    "expect": {
+      "trigger": "missing_delivery_claim",
+      "action": "automatic_refund",
+      "maximum_amount": 50.5,
+      "condition": "tracking_unavailable",
+      "exceptions": []
+    }
+  },
+  {
+    "id": "e15-conversion-rule-stated",
+    "text": "Automatically refund missing-delivery claims of £15 or less when tracking is unavailable. Transactions in other currencies are converted to GBP at the approved daily exchange rate before the threshold is applied.",
+    "context": "",
+    "expect": {
+      "trigger": "missing_delivery_claim",
+      "action": "automatic_refund",
+      "maximum_amount": 15,
+      "currency": "GBP",
+      "currency_handling": "convert_to_policy_currency",
+      "exceptions": [],
+      "ambiguities_exclude": [
+        "CURRENCY_CONVERSION"
+      ]
+    }
+  }
+]
